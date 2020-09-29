@@ -1,38 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 
 export default function App() {
   const [people, setPeople] = useState([
-    { name: 'nicole', key: '1' },
-    { name: 'yoshi', key: '2' },
-    { name: 'mario', key: '3' },
-    { name: 'luigi', key: '4' },
-    { name: 'peach', key: '5' },
-    { name: 'toad', key: '6' },
-    { name: 'bowser', key: '7' },
-  ])
+    { name: 'nicole',id: '1' },
+    { name: 'yoshi', id: '2' },
+    { name: 'mario', id: '3' },
+    { name: 'luigi', id: '4' },
+    { name: 'peach', id: '5' },
+    { name: 'toad', id: '6' },
+    { name: 'bowser',id: '7' },
+  ]);
 
+
+  const pressHandler = (id) => {
+    console.log(id)
+    setPeople((prevPeople) => {
+      return prevPeople.filter(person => person.id != id)
+    })
+  }
 
   return (
     <View style={styles.container}>
 
       <FlatList  
-        data={people}
+        numColumns={2}
+        keyExtractor={(item) => item.id}
+        data={people}  
         renderItem={({ item }) => (
-          <Text style={styles.item}>{item.name}</Text>
+          <TouchableOpacity onPress={() => pressHandler(item.id)}>
+            <Text style={styles.item}>{item.name}</Text>
+          </TouchableOpacity>
+          
         )}
       
       />
-
-      {/* <ScrollView>
-      { people.map(item => (
-          <View key={item.key}>
-            <Text style={styles.item}>{item.name}</Text>
-          </View>
-        )
-      )}
-      </ScrollView> */}
 
     </View>
   );
@@ -52,6 +55,8 @@ const styles = StyleSheet.create({
     padding: 30,
     backgroundColor: 'pink',
     fontSize: 24,
+    marginHorizontal: 10,
+    marginTop: 24,
   }
 });
 
